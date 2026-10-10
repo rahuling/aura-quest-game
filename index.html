@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aura Quest: Curse of the Number Demon</title>
+  <meta name="description" content="A maths adventure for 9 to 10 year olds. Climb the road to Demon Mountain, solve maths challenges in ten villages, pick a sidekick and win badges.">
+  <link rel="icon" href="logo.png">
+  <style>
+    :root {
+      --navy: #1e3a5f;
+      --indigo: #3f51b5;
+      --violet: #7e57c2;
+      --gold: #ffd54f;
+      --gold-dark: #e0a800;
+      --pink: #ec407a;
+      --mint: #26a69a;
+      --ink: #14213d;
+      --paper: #f4f7ff;
+      --card: #ffffff;
+      --muted: #4a5878;
+      --hero-from: #81d4fa;
+      --hero-to: #e1f5fe;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #f2f4ff;
+        --paper: #0f1a2e;
+        --card: #1a2a47;
+        --muted: #b6c2dd;
+        --hero-from: #1e3a5f;
+        --hero-to: #0f1a2e;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #f2f4ff;
+      --paper: #0f1a2e;
+      --card: #1a2a47;
+      --muted: #b6c2dd;
+      --hero-from: #1e3a5f;
+      --hero-to: #0f1a2e;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    section { padding: 48px 0; }
+    h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); margin: 0 0 8px; letter-spacing: -0.01em; }
+    .lead { color: var(--muted); font-size: 1.1rem; margin: 0 0 28px; max-width: 60ch; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, var(--hero-from), var(--hero-to));
+      text-align: center;
+      padding: 56px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero .deco { position: absolute; font-size: 2rem; opacity: .85; pointer-events: none; }
+    .logo {
+      width: 128px; height: 128px; border-radius: 30px;
+      box-shadow: 0 12px 30px rgba(30,58,95,.35);
+    }
+    h1 { font-size: clamp(2.4rem, 8vw, 4rem); margin: 18px 0 4px; letter-spacing: -0.03em; line-height: 1.05; }
+    .subtitle {
+      display: inline-block;
+      background: var(--navy); color: var(--gold);
+      font-weight: 800; padding: 6px 16px; border-radius: 999px;
+      margin: 8px 0 18px;
+    }
+    .pitch { font-size: 1.25rem; max-width: 36ch; margin: 0 auto 28px; }
+    .cta {
+      display: inline-block;
+      background: var(--gold); color: var(--navy);
+      font-weight: 800; font-size: 1.25rem; text-decoration: none;
+      padding: 16px 40px; border-radius: 999px;
+      box-shadow: 0 6px 0 var(--gold-dark);
+    }
+    .cta:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--gold-dark); }
+    .also { margin-top: 18px; font-size: .95rem; color: var(--muted); }
+
+    /* Comic strip */
+    .strip { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .panel {
+      border: 4px solid #111; border-radius: 20px; padding: 18px;
+      box-shadow: 6px 6px 0 rgba(0,0,0,.35);
+      color: #fff; min-height: 230px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .panel .scene { font-size: 3.6rem; text-align: center; }
+    .panel .caption { background: rgba(0,0,0,.72); border-radius: 10px; padding: 10px 12px; font-size: .98rem; }
+    .p1 { background: linear-gradient(135deg, #29b6f6, #7e57c2); }
+    .p2 { background: linear-gradient(135deg, #4a148c, #b71c1c); }
+    .p3 { background: linear-gradient(135deg, #00897b, #1565c0); }
+
+    /* Road */
+    .road { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    .village {
+      background: var(--card); border-radius: 18px; padding: 14px 16px;
+      border: 3px solid var(--gold); display: flex; gap: 12px; align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    }
+    .village .em { font-size: 2rem; }
+    .village b { display: block; }
+    .village span { color: var(--muted); font-size: .92rem; }
+
+    /* Sidekicks */
+    .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card {
+      background: var(--card); border-radius: 22px; padding: 20px; text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,.1);
+    }
+    .card .em { font-size: 3.2rem; }
+    .card h3 { margin: 6px 0 4px; }
+    .card p { margin: 4px 0; color: var(--muted); }
+    .card .hint { color: var(--ink); font-weight: 700; margin-top: 10px; }
+
+    /* Steps and twists */
+    .steps { counter-reset: s; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); padding: 0; list-style: none; margin: 0; }
+    .steps li {
+      counter-increment: s; background: var(--card); border-radius: 18px; padding: 16px 16px 16px 60px;
+      position: relative; box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    }
+    .steps li::before {
+      content: counter(s); position: absolute; left: 14px; top: 14px;
+      width: 34px; height: 34px; border-radius: 50%; background: var(--indigo); color: #fff;
+      font-weight: 800; display: grid; place-items: center;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .chip {
+      background: linear-gradient(135deg, var(--violet), var(--pink)); color: #fff;
+      border-radius: 999px; padding: 8px 16px; font-weight: 700;
+    }
+
+    /* Parents */
+    .parents { background: var(--card); border-radius: 24px; padding: 28px; box-shadow: 0 6px 16px rgba(0,0,0,.1); }
+    .parents ul { margin: 12px 0 0; padding-left: 1.2rem; }
+    .parents li { margin: 6px 0; }
+
+    footer { text-align: center; color: var(--muted); padding: 32px 16px 48px; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="deco" style="left:6%;top:18%">☁️</span>
+    <span class="deco" style="right:8%;top:12%">🌈</span>
+    <span class="deco" style="left:12%;bottom:12%">🌸</span>
+    <span class="deco" style="right:14%;bottom:16%">🦋</span>
+    <div class="wrap">
+      <img class="logo" src="logo.png" alt="Aura Quest logo: a gold star on a navy badge">
+      <h1>Aura Quest</h1>
+      <div class="subtitle">Curse of the Number Demon</div>
+      <p class="pitch">The Demon stole the aura from ten villages. Only a true maths legend can break the curse.</p>
+      <a class="cta" href="play/">Play now 🚀</a>
+      <p class="also">Plays in your browser. Also available as a Windows app.</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <h2>You are the hero</h2>
+        <p class="lead">Pick your character, read the comic, and set off. Every village on the road has someone who needs help.</p>
+        <div class="strip">
+          <div class="panel p1">
+            <div class="scene">🌈🏡</div>
+            <div class="caption">The Learnlands were the most colourful place in the world.</div>
+          </div>
+          <div class="panel p2">
+            <div class="scene">😈🌋</div>
+            <div class="caption">"Numbers and aura are mine now!" The Number Demon cast a dark curse.</div>
+          </div>
+          <div class="panel p3">
+            <div class="scene">🦸✨</div>
+            <div class="caption">Only a true maths legend can fix this. Enter, hero!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>The road to Demon Mountain</h2>
+        <p class="lead">Ten villages, ten characters, ten maths challenges. Clear one to unlock the next.</p>
+        <div class="road">
+          <div class="village"><div class="em">🏡</div><div><b>Sunny Village</b><span>Times tables</span></div></div>
+          <div class="village"><div class="em">🌼</div><div><b>Bouncy Meadow</b><span>Place value</span></div></div>
+          <div class="village"><div class="em">🌲</div><div><b>Whispering Forest</b><span>Add and subtract</span></div></div>
+          <div class="village"><div class="em">🌾</div><div><b>Fraction Fields</b><span>Equivalent fractions</span></div></div>
+          <div class="village"><div class="em">🏘️</div><div><b>Market Town</b><span>Money and change</span></div></div>
+          <div class="village"><div class="em">🗼</div><div><b>Ticktock Tower</b><span>Elapsed time</span></div></div>
+          <div class="village"><div class="em">🌊</div><div><b>Sharing Stream</b><span>Division</span></div></div>
+          <div class="village"><div class="em">🏞️</div><div><b>Ripple Lake</b><span>Rounding</span></div></div>
+          <div class="village"><div class="em">🌉</div><div><b>Stone Bridge</b><span>Area and perimeter</span></div></div>
+          <div class="village"><div class="em">🏚️</div><div><b>Dark Outpost</b><span>Word problems</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Pick a sidekick</h2>
+        <p class="lead">A friend travels with you, gives hints and cheers you on. The first hint in every mission is free.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="em">✨</div>
+            <h3>Nova</h3>
+            <p>A star sprite who zaps trouble away.</p>
+            <p class="hint">Zaps two wrong answers</p>
+          </div>
+          <div class="card">
+            <div class="em">🤖</div>
+            <h3>Prof. Pixel</h3>
+            <p>A tiny robot who explains everything.</p>
+            <p class="hint">A quick tip, plus one wrong answer gone</p>
+          </div>
+          <div class="card">
+            <div class="em">🦫</div>
+            <h3>Chonk</h3>
+            <p>A chill capybara. No stress, just vibes.</p>
+            <p class="hint">Hints are always free</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>How it works</h2>
+        <ol class="steps">
+          <li><b>Set up.</b> Type your name, pick a hero and a sidekick.</li>
+          <li><b>Walk the road.</b> Each village is five questions.</li>
+          <li><b>Beat the clock.</b> Quick answers earn bonus aura.</li>
+          <li><b>Win badges.</b> Score 80% to clear the village and unlock the next chapter of the story.</li>
+        </ol>
+        <div class="chips">
+          <span class="chip">⏱️ 15 second countdown</span>
+          <span class="chip">⚡ Speed bonus</span>
+          <span class="chip">🔥 Combos</span>
+          <span class="chip">👑 Boss question</span>
+          <span class="chip">🏅 Badges to show off</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="parents">
+          <h2>For parents</h2>
+          <p class="lead" style="margin-bottom:0">Short, low-stakes practice built around Grade 4 / Primary 4 Maths outcomes.</p>
+          <ul>
+            <li><b>What it covers:</b> times tables, place value, add and subtract, fractions, money, time, division, rounding, area and perimeter, and word problems. English is on the way.</li>
+            <li><b>How mastery is judged:</b> an outcome counts as secure after 80% or more on two different days, so a lucky run is not enough.</li>
+            <li><b>No pressure:</b> no lives and no game over. A wrong answer gets a retry and a friendly nudge.</li>
+            <li><b>Private:</b> no accounts, no ads, no chat. Progress stays on the device.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Aura Quest: Curse of the Number Demon
+  </footer>
+</body>
+</html>
